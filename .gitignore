@@ -3,3 +3,4 @@ composer.phar
 vendor/*
 tests/files/stage/*
 tests/files/tmp/*
+.idea
