@@ -9,6 +9,10 @@
         {
             "name": "Thiago Rodrigues",
             "email": "xthiago@gmail.com"
+        },
+        {
+            "name": "Denis Kiselev",
+            "email": "kiselevden911@yandex.ru"
         }
     ],
     "autoload": {
