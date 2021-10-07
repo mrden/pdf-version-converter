@@ -57,7 +57,7 @@ class GhostscriptConverter implements ConverterInterface
     }
 
     /**
-     * {@inheritdoc }
+     * {@inheritdoc}
      */
     public function convert($file, $newVersion)
     {
@@ -65,8 +65,9 @@ class GhostscriptConverter implements ConverterInterface
 
         $this->command->run($file, $tmpFile, $newVersion);
 
-        if (!$this->fs->exists($tmpFile))
+        if (!$this->fs->exists($tmpFile)) {
             throw new \RuntimeException("The generated file '{$tmpFile}' was not found.");
+        }
 
         $this->fs->copy($tmpFile, $file, true);
     }
