@@ -24,14 +24,19 @@ class GhostscriptConverterCommand
      */
     protected $baseCommand = 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=%s -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -dColorConversionStrategy=/LeaveColorUnchanged -dEncodeColorImages=false -dEncodeGrayImages=false -dEncodeMonoImages=false -dDownsampleMonoImages=false -dDownsampleGrayImages=false -dDownsampleColorImages=false -dAutoFilterColorImages=false -dAutoFilterGrayImages=false -dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode  -sOutputFile=%s %s';
 
-    public function __construct()
-    {
-    }
-
-    public function run($originalFile, $newFile, $newVersion)
+    /**
+     * @param $originalFile
+     * @param $newFile
+     * @param $newVersion
+     * @param array|null $env
+     */
+    public function run($originalFile, $newFile, $newVersion, array $env = null)
     {
         $command = sprintf($this->baseCommand, $newVersion, $newFile, escapeshellarg($originalFile));
         $process = new Process($command);
+        if ($env) {
+            $process->setEnv($env);
+        }
         $process->run();
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
