@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Xthiago\PDFVersionConverter\Converter;
+namespace Mrden\PDFVersionConverter\Converter;
 
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -38,9 +38,9 @@ class GhostscriptConverter implements ConverterInterface
     /**
      * @param GhostscriptConverterCommand $command
      * @param Filesystem $fs
-     * @param null|string $tmp
+     * @param string|null $tmp
      */
-    public function __construct(GhostscriptConverterCommand $command, Filesystem $fs, $tmp = null)
+    public function __construct(GhostscriptConverterCommand $command, Filesystem $fs, ?string $tmp = null)
     {
         $this->command = $command;
         $this->fs = $fs;
@@ -51,7 +51,7 @@ class GhostscriptConverter implements ConverterInterface
      * Generates a unique absolute path for tmp file.
      * @return string absolute path
      */
-    protected function generateAbsolutePathOfTmpFile()
+    protected function generateAbsolutePathOfTmpFile(): string
     {
         return $this->tmp .'/'. uniqid('pdf_version_changer_') . '.pdf';
     }

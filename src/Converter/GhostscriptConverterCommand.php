@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Xthiago\PDFVersionConverter\Converter;
+namespace Mrden\PDFVersionConverter\Converter;
 
 use Symfony\Component\Process\Process;
 
@@ -25,15 +25,15 @@ class GhostscriptConverterCommand
     protected $baseCommand = 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=%s -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -dColorConversionStrategy=/LeaveColorUnchanged -dEncodeColorImages=false -dEncodeGrayImages=false -dEncodeMonoImages=false -dDownsampleMonoImages=false -dDownsampleGrayImages=false -dDownsampleColorImages=false -dAutoFilterColorImages=false -dAutoFilterGrayImages=false -dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode  -sOutputFile=%s %s';
 
     /**
-     * @param $originalFile
-     * @param $newFile
-     * @param $newVersion
+     * @param string $originalFile
+     * @param string $newFile
+     * @param string $newVersion
      * @param array|null $env
      */
-    public function run($originalFile, $newFile, $newVersion, array $env = null)
+    public function run(string $originalFile, string $newFile, string $newVersion, ?array $env = null)
     {
         $command = sprintf($this->baseCommand, $newVersion, $newFile, escapeshellarg($originalFile));
-        $process = new Process($command);
+        $process = Process::fromShellCommandline($command);
         if ($env) {
             $process->setEnv($env);
         }

@@ -8,14 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Xthiago\PDFVersionConverter\Guesser;
+namespace Tests\Guesser;
 
-use \PHPUnit_Framework_TestCase;
+use Mrden\PDFVersionConverter\Guesser\RegexGuesser;
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @author Thiago Rodrigues <xthiago@gmail.com>
  */
-class RegexGuesserTest extends PHPUnit_Framework_TestCase
+class RegexGuesserTest extends TestCase
 {
     protected static $files = array(
         'text',
@@ -35,7 +37,7 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
 
     protected $stageDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tmpDir = __DIR__.'/../files/repo/';
         $this->stageDir = __DIR__.'/../files/stage/';
@@ -45,11 +47,11 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
 
         foreach(self::$files as $file) {
             if (!copy($this->tmpDir . $file, $this->stageDir . $file))
-                throw new \RuntimeException("Can't create test file.");
+                throw new RuntimeException("Can't create test file.");
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach(self::$files as $file) {
             unlink($this->stageDir . $file);
@@ -62,7 +64,7 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider filesProvider
      */
-    public function testMustReturnRightVersion($file, $expectedVersion)
+    public function testMustReturnRightVersion(string $file, string $expectedVersion)
     {
         $guesser = new RegexGuesser();
         $version = $guesser->guess($file);
@@ -74,10 +76,11 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
      * @param string $file
      *
      * @dataProvider invalidFilesProvider
-     * @expectedException RuntimeException
+     *
      */
     public function testMustThrowException($file)
     {
+        $this->expectException(RuntimeException::class);
         $guesser = new RegexGuesser();
         $version = $guesser->guess($file);
     }
@@ -85,7 +88,7 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public static function filesProvider()
+    public static function filesProvider(): array
     {
         return array(
             // file, current version
@@ -104,7 +107,7 @@ class RegexGuesserTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public static function invalidFilesProvider()
+    public static function invalidFilesProvider(): array
     {
         $stageDir = __DIR__.'/../files/stage/';
 

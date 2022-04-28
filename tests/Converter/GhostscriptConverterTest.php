@@ -8,28 +8,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Xthiago\PDFVersionConverter\Converter;
+namespace Tests\Converter;
 
-use \PHPUnit_Framework_TestCase;
+use Mrden\PDFVersionConverter\Converter\GhostscriptConverter;
+use Mrden\PDFVersionConverter\Converter\GhostscriptConverterCommand;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author Thiago Rodrigues <xthiago@gmail.com>
  */
-class GhostscriptConverterTest extends PHPUnit_Framework_TestCase
+class GhostscriptConverterTest extends TestCase
 {
+    use ProphecyTrait;
+
     protected $tmp;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->tmp = __DIR__.'/../files/stage/';
+        $this->tmp = __DIR__.'/../files/stage';
 
         if (!file_exists($this->tmp))
             mkdir($this->tmp);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 
@@ -39,31 +44,30 @@ class GhostscriptConverterTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider filesProvider
      */
-    public function testMustConvertPDFVersionWithSuccess($file, $newVersion)
+    public function testMustConvertPDFVersionWithSuccess(string $file, $newVersion)
     {
-        $fs = $this->prophesize('\Symfony\Component\Filesystem\Filesystem');
+        $fs = $this->prophesize(Filesystem::class);
         $fs->exists(Argument::type('string'))
-           ->willReturn(true)
-           ->shouldBeCalled()
-        ;
+            ->willReturn(true)
+            ->shouldBeCalled();
+
         $fs->copy(
                 Argument::type('string'),
                 $file,
                 true
             )
-            ->willReturn(true)
-            ->shouldBeCalled()
-        ;
+            ->willReturn(null)
+            ->shouldBeCalled();
 
-        $command = $this->prophesize('Xthiago\PDFVersionConverter\Converter\GhostscriptConverterCommand');
+        $command = $this->prophesize(GhostscriptConverterCommand::class);
         $command->run(
                 $file,
                 Argument::type('string'),
-                $newVersion
+                $newVersion,
+                Argument::type('null')
             )
             ->willReturn(null)
-            ->shouldBeCalled()
-        ;
+            ->shouldBeCalled();
 
         $converter = new GhostscriptConverter(
             $command->reveal(),
@@ -77,19 +81,18 @@ class GhostscriptConverterTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public static function filesProvider()
+    public static function filesProvider(): array
     {
         return array(
             // file, new version
-            array(__DIR__ . '/../files/stage/v1.1.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.2.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.3.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.4.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.5.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.6.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.7 filename with "Sp3ci4l"; <\'Ch4r5\'> !£$%&()=?^[]{}è@#§.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.7.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v2.0.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.1.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.2.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.3.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.4.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.5.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.6.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.7.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v2.0.pdf', '1.4'),
         );
     }
 }

@@ -7,17 +7,17 @@ PHP library for converting the version of PDF files (for compatibility purposes)
 
 ## Requirements
 
-- PHP 5.3+
+- PHP 7.3+
 - Ghostscript (gs command on Linux)
 
 ## Installation
 
-Run `php composer.phar require xthiago/pdf-version-converter dev-master` or add the follow lines to composer and run `composer install`:
+Run `php composer.phar require mrden/pdf-version-converter dev-master` or add the follow lines to composer and run `composer install`:
 
 ```
 {
     "require": {
-        "xthiago/pdf-version-converter": "dev-master"
+        "mrden/pdf-version-converter": "dev-master"
     }
 }
 ```

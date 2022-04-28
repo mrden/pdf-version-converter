@@ -8,15 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Xthiago\PDFVersionConverter\Converter;
+namespace Tests\Converter;
 
-use \PHPUnit_Framework_TestCase;
-use Xthiago\PDFVersionConverter\Guesser\RegexGuesser;
+use Mrden\PDFVersionConverter\Converter\GhostscriptConverterCommand;
+use PHPUnit\Framework\TestCase;
+use Mrden\PDFVersionConverter\Guesser\RegexGuesser;
+use RuntimeException;
 
 /**
  * @author Thiago Rodrigues <xthiago@gmail.com>
  */
-class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
+class GhostscriptConverterCommandTest extends TestCase
 {
     protected $tmp;
 
@@ -34,9 +36,9 @@ class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
         'v2.0.pdf',
     );
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->tmp = __DIR__.'/../files/stage/';
+        $this->tmp = realpath(__DIR__.'/../files/stage');
 
         if (!file_exists($this->tmp))
             mkdir($this->tmp);
@@ -48,11 +50,11 @@ class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
     {
         foreach($this->files as $file) {
             if (!copy(__DIR__.'/../files/repo/'. $file, $this->tmp . $file))
-                throw new \RuntimeException("Can't create test file.");
+                throw new RuntimeException("Can't create test file.");
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach($this->files as $file) {
             unlink($this->tmp . $file);
@@ -65,7 +67,7 @@ class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider filesProvider
      */
-    public function testMustConvertPDFVersionWithSuccess($file, $newVersion)
+    public function testMustConvertPDFVersionWithSuccess(string $file, $newVersion)
     {
         $tmpFile = $this->tmp .'/'. uniqid('pdf_version_changer_test_') . '.pdf';
 
@@ -87,10 +89,11 @@ class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
      * @param $newVersion
      *
      * @dataProvider invalidFilesProvider
-     * @expectedException RuntimeException
+     *
      */
-    public function testMustThrowException($invalidFile, $newVersion)
+    public function testMustThrowException(string $invalidFile, $newVersion)
     {
+        $this->expectException(RuntimeException::class);
         $tmpFile = $this->tmp .'/'. uniqid('pdf_version_changer_test_') . '.pdf';
 
         $command = new GhostscriptConverterCommand();
@@ -109,31 +112,31 @@ class GhostscriptConverterCommandTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public static function filesProvider()
+    public static function filesProvider(): array
     {
         return array(
             // file, new version
-            array(__DIR__ . '/../files/stage/v1.1.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.2.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.3.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.4.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.5.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.6.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v1.7.pdf', '1.4'),
-            array(__DIR__ . '/../files/stage/v2.0.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.1.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.2.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.3.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.4.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.5.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.6.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v1.7.pdf', '1.4'),
+            array(__DIR__ . '/../files/repo/v2.0.pdf', '1.4'),
         );
     }
 
     /**
      * @return array
      */
-    public static function invalidFilesProvider()
+    public static function invalidFilesProvider(): array
     {
         return array(
             // file, new version
-            array(__DIR__.'/../files/stage/text', '1.4'),
-            array(__DIR__.'/../files/stage/image.png', '1.5'),
-            array(__DIR__.'/../files/stage/dont-exists.pdf', '1.5'),
+            array(__DIR__.'/../files/repo/text', '1.4'),
+            array(__DIR__.'/../files/repo/image.png', '1.5'),
+            array(__DIR__.'/../files/repo/dont-exists.pdf', '1.5'),
         );
     }
 }

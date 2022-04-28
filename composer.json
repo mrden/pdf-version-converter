@@ -1,5 +1,5 @@
 {
-    "name": "xthiago/pdf-version-converter",
+    "name": "mrden/pdf-version-converter",
     "description": "PHP library for converting the version of PDF files (for compatibility purposes).",
     "keywords": ["pdf", "converter", "version converter", "pdf version converter", "pdf version"],
     "license": "MIT",
@@ -15,25 +15,29 @@
             "email": "kiselevden911@yandex.ru"
         }
     ],
+    "require": {
+        "php": ">=7.3",
+        "symfony/filesystem": "^5.4",
+        "symfony/process": "^5.4"
+    },
     "autoload": {
         "psr-4": {
-            "Xthiago\\PDFVersionConverter\\": [
-                "src/",
-                "tests/"
-            ]
+            "Mrden\\PDFVersionConverter\\": "src"
         }
     },
-    "require": {
-        "php": ">=5.3.0",
-        "symfony/filesystem": "*",
-        "symfony/process": "*"
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.5"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
