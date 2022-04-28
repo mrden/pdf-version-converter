@@ -4,3 +4,5 @@ vendor/*
 tests/files/stage/*
 tests/files/tmp/*
 .idea
+/composer.lock
+/.phpunit.result.cache
