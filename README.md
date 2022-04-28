@@ -1,10 +1,6 @@
 # PDF version converter 
 PHP library for converting the version of PDF files (for compatibility purposes).
 
-[![Build Status](https://travis-ci.org/xthiago/pdf-version-converter.svg?branch=master)](https://travis-ci.org/xthiago/pdf-version-converter) 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/33db053e-d59b-4787-9a03-e4ab1e2a7382/mini.png)](https://insight.sensiolabs.com/projects/33db053e-d59b-4787-9a03-e4ab1e2a7382)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4f0a04e3cc2048deb7415cd669dcf2a1)](https://www.codacy.com/app/xthiago/pdf-version-converter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=xthiago/pdf-version-converter&amp;utm_campaign=Badge_Grade)
-
 ## Requirements
 
 - PHP 7.3+
@@ -33,7 +29,7 @@ Guessing a version of PDF File:
 require_once __DIR__.'/vendor/autoload.php'; 
 
 // import the namespaces
-use Xthiago\PDFVersionConverter\Guesser\RegexGuesser;
+use Mrden\PDFVersionConverter\Guesser\RegexGuesser;
 // [..]
 
 $guesser = new RegexGuesser();
@@ -50,8 +46,8 @@ require_once __DIR__.'/vendor/autoload.php';
 
 // import the namespaces
 use Symfony\Component\Filesystem\Filesystem,
-    Xthiago\PDFVersionConverter\Converter\GhostscriptConverterCommand,
-    Xthiago\PDFVersionConverter\Converter\GhostscriptConverter;
+    Mrden\PDFVersionConverter\Converter\GhostscriptConverterCommand,
+    Mrden\PDFVersionConverter\Converter\GhostscriptConverter;
 
 // [..]
 
